@@ -13,12 +13,6 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                sh "docker compose build"
-            }
-        }
-
         stage('Run Proxy') {
             steps {
                 withCredentials([
@@ -31,7 +25,7 @@ pipeline {
                         sh """
                         CRT_SOURCE=${CRT_FILE} \
                         KEY_SOURCE=${KEY_FILE} \
-                        docker compose up -d --force-recreate
+                        docker compose up -d --build
                         """
                     }
                 }

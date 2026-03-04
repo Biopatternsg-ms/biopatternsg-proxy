@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    environment {
+        NETWORK_NAME = 'general-network'
+        CERT_DEST = "/etc/nginx/ssl"
+    }
+
+    stages {
+        stage('Prepare Network') {
+            steps {
+                sh "docker network create ${NETWORK_NAME} || true"
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh "docker compose build"
+            }
+        }
+
+        stage('Run Proxy') {
+            steps {
+                withCredentials([
+                    file(credentialsId: 'NGINX_CERT', variable: 'CRT_FILE'),
+                    file(credentialsId: 'NGINX_KEY', variable: 'KEY_FILE')
+                ]){
+                    script {
+                        // Pasamos las rutas de los archivos temporales de Jenkins al Compose
+                        // Usamos las variables CRT_SOURCE y KEY_SOURCE que espera el yaml
+                        sh """
+                        CRT_SOURCE=${CRT_FILE} \
+                        KEY_SOURCE=${KEY_FILE} \
+                        docker compose up -d
+                        """
+                    }
+                }
+            }
+        }
+    }
+}

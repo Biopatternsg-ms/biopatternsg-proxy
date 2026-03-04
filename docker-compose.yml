@@ -1,0 +1,12 @@
+version: '3'
+services:
+  nginx:
+    build: .
+    container_name: biopatternsg-proxy
+    ports:
+      - "443:443"
+    networks:
+      - general-network
+networks:
+  general-network:
+    external: true

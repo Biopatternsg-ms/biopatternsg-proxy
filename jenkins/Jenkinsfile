@@ -20,12 +20,12 @@ pipeline {
                     file(credentialsId: 'NGINX_KEY', variable: 'KEY_FILE')
                 ]){
                     script {
-                        // Pasamos las rutas de los archivos temporales de Jenkins al Compose
-                        // Usamos las variables CRT_SOURCE y KEY_SOURCE que espera el yaml
+                        // Copiamos los secretos temporalmente al contexto de Docker para no requerir volúmenes
                         sh """
-                        CRT_SOURCE=${CRT_FILE} \
-                        KEY_SOURCE=${KEY_FILE} \
+                        cp ${CRT_FILE} ./cert.crt
+                        cp ${KEY_FILE} ./cert.key
                         docker compose up -d --build
+                        rm -f ./cert.crt ./cert.key
                         """
                     }
                 }

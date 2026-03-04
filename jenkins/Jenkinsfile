@@ -31,7 +31,7 @@ pipeline {
                         sh """
                         CRT_SOURCE=${CRT_FILE} \
                         KEY_SOURCE=${KEY_FILE} \
-                        docker compose up -d
+                        docker compose up -d --force-recreate
                         """
                     }
                 }

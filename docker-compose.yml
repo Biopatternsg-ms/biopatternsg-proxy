@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   nginx:
     build: .
@@ -12,8 +13,8 @@ services:
       
       # 2. Montamos los certificados usando las rutas de Jenkins
       # Estas variables vienen del comando 'sh' en tu Jenkinsfile
-      - ${NGINX_CRT}:/etc/nginx/ssl/server.crt:ro
-      - ${NGINX_KEY}:/etc/nginx/ssl/server.key:ro
+      - ${CRT_SOURCE}:/etc/nginx/ssl/server.crt:ro
+      - ${KEY_SOURCE}:/etc/nginx/ssl/server.key:ro
     networks:
       - general-network
 

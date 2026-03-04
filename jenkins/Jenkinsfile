@@ -22,7 +22,7 @@ pipeline {
         stage('Run Proxy') {
             steps {
                 withCredentials([
-                    file(credentialsId: 'NGINX_CERT', variable: 'CRT_FILE'),
+                    file(credentialsId: 'NGINX_CRT', variable: 'CRT_FILE'),
                     file(credentialsId: 'NGINX_KEY', variable: 'KEY_FILE')
                 ]){
                     script {

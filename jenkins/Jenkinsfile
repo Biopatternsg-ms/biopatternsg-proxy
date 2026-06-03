@@ -16,8 +16,8 @@ pipeline {
         stage('Run Proxy') {
             steps {
                 withCredentials([
-                    file(credentialsId: 'NGINX_CRT', variable: 'CRT_FILE'),
-                    file(credentialsId: 'NGINX_KEY', variable: 'KEY_FILE')
+                    file(credentialsId: 'REDCLARA_CRT', variable: 'CRT_FILE'),
+                    file(credentialsId: 'REDCLARA_KEY', variable: 'KEY_FILE')
                 ]){
                     script {
                         // Copiamos los secretos temporalmente al contexto de Docker para no requerir volúmenes

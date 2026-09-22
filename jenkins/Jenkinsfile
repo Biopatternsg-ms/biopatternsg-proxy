@@ -24,6 +24,7 @@ pipeline {
                         sh """
                         cp ${CRT_FILE} ./cert.crt
                         cp ${KEY_FILE} ./cert.key
+                        sed -i "s/server_name .*/server_name \${PUBLIC_DOMAIN};/g" nginx.conf
                         docker compose up -d --build
                         rm -f ./cert.crt ./cert.key
                         """

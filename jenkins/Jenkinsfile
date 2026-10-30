@@ -16,14 +16,15 @@ pipeline {
         stage('Run Proxy') {
             steps {
                 withCredentials([
-                    file(credentialsId: 'NGINX_CRT', variable: 'CRT_FILE'),
-                    file(credentialsId: 'NGINX_KEY', variable: 'KEY_FILE')
+                    file(credentialsId: 'REDCLARA_CRT', variable: 'CRT_FILE'),
+                    file(credentialsId: 'REDCLARA_KEY', variable: 'KEY_FILE')
                 ]){
                     script {
                         // Copiamos los secretos temporalmente al contexto de Docker para no requerir volúmenes
                         sh """
                         cp ${CRT_FILE} ./cert.crt
                         cp ${KEY_FILE} ./cert.key
+                        sed -i "s/server_name .*/server_name \${PUBLIC_DOMAIN};/g" nginx.conf
                         docker compose up -d --build
                         rm -f ./cert.crt ./cert.key
                         """
